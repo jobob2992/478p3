@@ -526,6 +526,8 @@ void Circuit::simOutputs(string inputFile)
 	ifs.open(inputFile.c_str());
 	if (!ifs.good()) cout << "input file is bad, or empty\n";
 
+	cout << "opened fstream\n";
+
 	while (ifs.good())	//initialize all the PrimaryInput nodes with values
 	{
 		tempName.clear();
