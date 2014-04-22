@@ -540,7 +540,7 @@ void Circuit::simOutputs(string inputFile)
 		cout << "value " << charVal << endl;
 		tempVal = atoi(charVal.c_str());
 		cout << "tempVal = " << tempVal << endl;
-		POmap.find(tempName)->second->setVal(tempVal);
+		PImap.find(tempName)->second->setVal(tempVal);
 		cout << "val is set\n";
 	}
 	cout << "PIs initialized\n";
