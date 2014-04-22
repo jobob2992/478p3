@@ -57,6 +57,9 @@ class TruthTable
     
     // clears all entries
     int clear();
+
+	// returns true if type is NOT
+	bool NOTNOT();
 };
 
 #endif

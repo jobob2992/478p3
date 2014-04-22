@@ -1,5 +1,6 @@
 #include "circuit.h"
 #include <math.h>
+#include <fstream>
 
 #include <utility>
 
@@ -28,7 +29,7 @@ int main(int argc, char **argv)
       {
         string inFilename = string(argv[++i]);
         Circuit c(inFilename);
-        // your code here
+		c.printTopo();
       }
       else
       {
@@ -43,7 +44,7 @@ int main(int argc, char **argv)
         string inFilename = string(argv[++i]);
         Circuit c(inFilename);
         string inputFile(argv[++i]);
-        // your code here
+		c.simOutputs(inputFile);
       }
       else
       {

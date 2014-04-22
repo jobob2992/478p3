@@ -76,3 +76,7 @@ int TruthTable::clear()
   return 0;
 }
 
+bool TruthTable::NOTNOT()
+{
+	return (logic[0][0] != 0);
+}

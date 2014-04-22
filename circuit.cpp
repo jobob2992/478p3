@@ -378,3 +378,165 @@ int Circuit::clear()
   return 0;
 }
 
+void Circuit::printTopo()
+{
+	vector<Node*> PIs = getPIs();			//primary inputs
+	map<string, Node*> PImap;
+	vector<Node*> POs = getPOs();			//primary outputs
+	map<string, Node*> POmap;
+	map<string, Node*> InternalsMapBase;	//map of internal nodes
+	map<string, Node*> InternalsMap;		//map of internal nodes
+	vector<Node*> Internals;				//generally ordered list of internal nodes
+	vector<Node*> tempFanIn;				//placeholder vector for working vector
+
+	//generate the map of PIs
+	for (int i = 0; i < PIs.size; i++)
+	{
+		PImap.insert(pair<string, Node*>(PIs[i]->getName, PIs[i]));
+	}
+
+	//generate the map of POs
+	for (int i = 0; i < POs.size; i++)
+	{
+		POmap.insert(pair<string, Node*>(POs[i]->getName, POs[i]));
+	}
+
+	//generate the map of internal gates
+	for (mapIter it = nodeMap.begin(); it != nodeMap.end(); it++)
+	{
+		if (it->second->type == INTERNAL)
+			InternalsMapBase.insert(*it);
+	}
+
+	//order the internal gates
+	for (mapIter it = InternalsMapBase.begin(); it != InternalsMapBase.end(); it++)
+	{
+		bool good = true;
+		tempFanIn = it->second->getFanin;
+		for (int i = 0; i < tempFanIn.size(); i++)	//check all the fanIns
+		{
+			if ((PImap.find(tempFanIn[i]->getName) == PImap.end()) && (InternalsMap.find(tempFanIn[i]->getName) == PImap.end()))	//don't have this fanIn yet, don't add to vector yet
+			{
+				good = false;
+				break;
+			}
+		}
+
+		if (good)	//all fanIns have already been seen, push it into the ordered vector, InternalMap, and delete it from the source map
+		{
+			Internals.push_back(it->second);
+			InternalsMap.insert(pair<string, Node*>(it->first, it->second));
+			InternalsMapBase.erase(it);
+			it = InternalsMapBase.begin();	//to make sure I don't reference out of bounds, will eventually get through, despite inefficiency
+		}
+
+		if ((it == InternalsMapBase.end()) && (InternalsMapBase.size > 0))	//if we're at the end of the gates, but there are still more to add, go back to beginning and run again
+		{
+			it = InternalsMapBase.begin();
+		}
+	}
+
+	//output the Topo
+	cout << "*** Topological order:" << endl;
+	for (int i = 0; i < PIs.size(); i++) cout << PIs[i]->getName << ' ';
+	for (int i = 0; i < Internals.size(); i++) cout << Internals[i]->getName << ' ';
+	for (int i = 0; i < POs.size(); i++)
+	{
+		cout << POs[i]->getName;
+		if (i != (POs.size() - 1)) cout << ' ';
+	}
+}
+
+void Circuit::simOutputs(string inputFile)
+{
+	vector<Node*> PIs = getPIs();			//primary inputs
+	map<string, Node*> PImap;
+	vector<Node*> POs = getPOs();			//primary outputs
+	map<string, Node*> POmap;
+	map<string, Node*> InternalsMapBase;	//map of internal nodes
+	map<string, Node*> InternalsMap;		//map of internal nodes
+	vector<Node*> Internals;				//generally ordered list of internal nodes
+	vector<Node*> tempFanIn;				//placeholder vector for working vector
+	ifstream ifs;
+	string tempName;
+	string charVal;
+	int tempVal;
+
+	//In this instance, the topological sort is reused to preface the value propagation through the circuit, if nodes are traversed in topological order
+	//then I don't have to worry about checking if the fanIn nodes have been set yet
+	
+	//generate the map of PIs
+	for (int i = 0; i < PIs.size; i++)
+	{
+		PImap.insert(pair<string, Node*>(PIs[i]->getName, PIs[i]));
+	}
+
+	//generate the map of POs
+	for (int i = 0; i < POs.size; i++)
+	{
+		POmap.insert(pair<string, Node*>(POs[i]->getName, POs[i]));
+	}
+
+	//generate the map of internal gates
+	for (mapIter it = nodeMap.begin(); it != nodeMap.end(); it++)
+	{
+		if (it->second->type == INTERNAL)
+			InternalsMapBase.insert(*it);
+	}
+
+	//order the internal gates
+	for (mapIter it = InternalsMapBase.begin(); it != InternalsMapBase.end(); it++)
+	{
+		bool good = true;
+		tempFanIn = it->second->getFanin;
+		for (int i = 0; i < tempFanIn.size(); i++)	//check all the fanIns
+		{
+			if ((PImap.find(tempFanIn[i]->getName) == PImap.end()) && (InternalsMap.find(tempFanIn[i]->getName) == PImap.end()))	//don't have this fanIn yet, don't add to vector yet
+			{
+				good = false;
+				break;
+			}
+		}
+
+		if (good)	//all fanIns have already been seen, push it into the ordered vector, InternalMap, and delete it from the source map
+		{
+			Internals.push_back(it->second);
+			InternalsMap.insert(pair<string, Node*>(it->first, it->second));
+			InternalsMapBase.erase(it);
+			it = InternalsMapBase.begin();	//to make sure I don't reference out of bounds, will eventually get through, despite inefficiency
+		}
+
+		if ((it == InternalsMapBase.end()) && (InternalsMapBase.size > 0))	//if we're at the end of the gates, but there are still more to add, go back to beginning and run again
+		{
+			it = InternalsMapBase.begin();
+		}
+	}
+
+	//initialize the file stream for input
+	ifs.open(inputFile, fstream::in);
+	if (!ifs.good) cout << "input file is bad, or empty\n";
+
+	while (ifs.good)	//initialize all the PrimaryInput nodes with values
+	{
+		tempName.clear();
+		charVal.clear();
+		getline(ifs, tempName, ' ');
+		getline(ifs, charVal, '\n');
+		tempVal = atoi(charVal.c_str());
+		POmap.find(tempName)->second->setVal(tempVal);
+	}
+
+	for (int i = 0; i < Internals.size(); i++)	//propagate the values through the topologically ordered internal nodes
+	{
+		Internals[i]->cascade();
+	}
+
+	cout << "*** Outputs:" << endl;			//begin output
+	for (int i = 0; i < POs.size(); i++)	//push values through to the primary outputs
+	{
+		POs[i]->cascade();
+		cout << POs[i]->getName() << " = " << POs[i]->getVal();		//output to screen as values are calculated
+		if (i != (POs.size() - 1)) cout << ", ";
+	}
+}
+

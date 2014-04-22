@@ -71,8 +71,9 @@ class Circuit
     // erases the contents of the entire circuit
     int clear();
     
+	void printTopo();
 
-    
+	void simOutputs(string inputFile);
 };
 
 #endif
