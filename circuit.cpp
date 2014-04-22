@@ -488,7 +488,7 @@ void Circuit::simOutputs(string inputFile)
 	for (mapIter it = InternalsMapBase.begin(); it != InternalsMapBase.end(); it++)
 	{
 		bool good = true;
-		tempFanIn = it->second->getFanin;
+		tempFanIn = it->second->getFanin();
 		for (int i = 0; i < tempFanIn.size(); i++)	//check all the fanIns
 		{
 			if ((PImap.find(tempFanIn[i]->getName()) == PImap.end()) && (InternalsMap.find(tempFanIn[i]->getName()) == PImap.end()))	//don't have this fanIn yet, don't add to vector yet
@@ -506,7 +506,7 @@ void Circuit::simOutputs(string inputFile)
 			it = InternalsMapBase.begin();	//to make sure I don't reference out of bounds, will eventually get through, despite inefficiency
 		}
 
-		if ((it == InternalsMapBase.end()) && (InternalsMapBase.size > 0))	//if we're at the end of the gates, but there are still more to add, go back to beginning and run again
+		if ((it == InternalsMapBase.end()) && (InternalsMapBase.size() > 0))	//if we're at the end of the gates, but there are still more to add, go back to beginning and run again
 		{
 			it = InternalsMapBase.begin();
 		}
