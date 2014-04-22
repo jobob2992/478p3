@@ -513,7 +513,7 @@ void Circuit::simOutputs(string inputFile)
 	}
 
 	//initialize the file stream for input
-	ifs.open(inputFile);
+	ifs.open(inputFile.c_str());
 	if (!ifs.good()) cout << "input file is bad, or empty\n";
 
 	while (ifs.good())	//initialize all the PrimaryInput nodes with values
