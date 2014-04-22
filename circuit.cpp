@@ -408,7 +408,7 @@ void Circuit::printTopo()
 	{
 		if (it->second->type == INTERNAL)
 			InternalsMapBase.insert(*it);
-		cout << "Internal insert " << i << endl;
+		cout << "Internal insert " << it->first << endl;
 	}
 
 	//order the internal gates
