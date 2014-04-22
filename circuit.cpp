@@ -514,9 +514,9 @@ void Circuit::simOutputs(string inputFile)
 
 	//initialize the file stream for input
 	ifs.open(inputFile, fstream::in);
-	if (!ifs.good) cout << "input file is bad, or empty\n";
+	if (!ifs.good()) cout << "input file is bad, or empty\n";
 
-	while (ifs.good)	//initialize all the PrimaryInput nodes with values
+	while (ifs.good())	//initialize all the PrimaryInput nodes with values
 	{
 		tempName.clear();
 		charVal.clear();
