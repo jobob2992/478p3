@@ -489,7 +489,7 @@ void Circuit::simOutputs(string inputFile)
 		if (it->second->type == INTERNAL)
 			InternalsMapBase.insert(*it);
 	}
-
+	cout << "about to order internal gates\n";
 	//order the internal gates
 	bool good = true;
 	for (mapIter it = InternalsMapBase.begin(); it != InternalsMapBase.end();)
@@ -520,7 +520,7 @@ void Circuit::simOutputs(string inputFile)
 		}
 	}
 
-	cout << "about to open the fstream";
+	cout << "about to open the fstream\n";
 
 	//initialize the file stream for input
 	ifs.open(inputFile.c_str());
