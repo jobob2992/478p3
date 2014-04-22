@@ -415,7 +415,6 @@ void Circuit::printTopo()
 	bool good = true;
 	for (mapIter it = InternalsMapBase.begin(); it != InternalsMapBase.end(); )
 	{
-		cout << it->first << endl;
 		good = true;
 		tempFanIn = it->second->getFanin();
 		for (int i = 0; i < tempFanIn.size(); i++)	//check all the fanIns
@@ -495,7 +494,6 @@ void Circuit::simOutputs(string inputFile)
 	bool good = true;
 	for (mapIter it = InternalsMapBase.begin(); it != InternalsMapBase.end();)
 	{
-		cout << it->first << endl;
 		good = true;
 		tempFanIn = it->second->getFanin();
 		for (int i = 0; i < tempFanIn.size(); i++)	//check all the fanIns
