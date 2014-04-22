@@ -520,6 +520,8 @@ void Circuit::simOutputs(string inputFile)
 		}
 	}
 
+	cout << "about to open the fstream";
+
 	//initialize the file stream for input
 	ifs.open(inputFile.c_str());
 	if (!ifs.good()) cout << "input file is bad, or empty\n";
