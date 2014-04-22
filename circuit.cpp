@@ -439,10 +439,13 @@ void Circuit::printTopo()
 			it = InternalsMapBase.begin();	//to make sure I don't reference out of bounds, will eventually get through, despite inefficiency
 		}
 
+		cout << "past if good\n";
+
 		if ((it == InternalsMapBase.end()) && (InternalsMapBase.size() > 0))	//if we're at the end of the gates, but there are still more to add, go back to beginning and run again
 		{
 			it = InternalsMapBase.begin();
 		}
+		cout << "past size/end check\n";
 	}
 	cout << "my assumption was right\n";
 
