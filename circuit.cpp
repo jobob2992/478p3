@@ -444,6 +444,7 @@ void Circuit::printTopo()
 		if ((it == InternalsMapBase.end()) && (InternalsMapBase.size() > 0))	//if we're at the end of the gates, but there are still more to add, go back to beginning and run again
 		{
 			it = InternalsMapBase.begin();
+			cout << "gets reset\n";
 		}
 		cout << "past size/end check\n";
 	}
