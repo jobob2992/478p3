@@ -533,11 +533,13 @@ void Circuit::simOutputs(string inputFile)
 		tempVal = atoi(charVal.c_str());
 		POmap.find(tempName)->second->setVal(tempVal);
 	}
+	cout << "PIs initialized\n";
 
 	for (int i = 0; i < Internals.size(); i++)	//propagate the values through the topologically ordered internal nodes
 	{
 		Internals[i]->cascade();
 	}
+	cout << "first cascade done\n";
 
 	cout << "*** Outputs:" << endl;			//begin output
 	for (int i = 0; i < POs.size(); i++)	//push values through to the primary outputs
