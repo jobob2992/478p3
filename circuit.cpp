@@ -407,8 +407,10 @@ void Circuit::printTopo()
 	for (mapIter it = nodeMap.begin(); it != nodeMap.end(); it++)
 	{
 		if (it->second->type == INTERNAL)
+		{
 			InternalsMapBase.insert(*it);
-		cout << "Internal insert " << it->first << endl;
+			cout << "Internal insert " << it->first << endl;
+		}
 	}
 
 	//order the internal gates
@@ -423,6 +425,7 @@ void Circuit::printTopo()
 			if ((PImap.find(tempFanIn[i]->getName()) == PImap.end()) && (InternalsMap.find(tempFanIn[i]->getName()) == PImap.end()))	//don't have this fanIn yet, don't add to vector yet
 			{
 				good = false;
+				cout << "goodcheck " << good << endl;
 				break;
 			}
 		}
