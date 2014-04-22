@@ -533,7 +533,9 @@ void Circuit::simOutputs(string inputFile)
 		tempName.clear();
 		charVal.clear();
 		getline(ifs, tempName, ' ');
+		cout << "grab name " << tempName << endl;
 		getline(ifs, charVal, '\n');
+		cout << "value " << charVal << endl;
 		tempVal = atoi(charVal.c_str());
 		POmap.find(tempName)->second->setVal(tempVal);
 	}
