@@ -437,6 +437,7 @@ void Circuit::printTopo()
 			InternalsMap.insert(pair<string, Node*>(it->first, it->second));
 			InternalsMapBase.erase(it);
 			it = InternalsMapBase.begin();	//to make sure I don't reference out of bounds, will eventually get through, despite inefficiency
+			cout << "went into good check\n";
 		}
 
 		cout << "past if good\n";
