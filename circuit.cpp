@@ -489,7 +489,6 @@ void Circuit::simOutputs(string inputFile)
 		if (it->second->type == INTERNAL)
 			InternalsMapBase.insert(*it);
 	}
-	cout << "about to order internal gates\n";
 	//order the internal gates
 	bool good = true;
 	for (mapIter it = InternalsMapBase.begin(); it != InternalsMapBase.end();)
@@ -520,36 +519,24 @@ void Circuit::simOutputs(string inputFile)
 		}
 	}
 
-	cout << "about to open the fstream\n";
-
 	//initialize the file stream for input
 	ifs.open(inputFile.c_str());
 	if (!ifs.good()) cout << "input file is bad, or empty\n";
 
-	cout << "opened fstream\n";
-
 	while (ifs.good())	//initialize all the PrimaryInput nodes with values
 	{
-		cout << "clearing\n";
 		tempName.clear();
 		charVal.clear();
-		cout << "about to get line\n";
 		getline(ifs, tempName, ' ');
-		cout << "grab name " << tempName << endl;
 		getline(ifs, charVal, '\n');
-		cout << "value " << charVal << endl;
 		tempVal = atoi(charVal.c_str());
-		cout << "tempVal = " << tempVal << endl;
 		PImap.find(tempName)->second->setVal(tempVal);
-		cout << "val is set\n";
 	}
-	cout << "PIs initialized\n";
 
 	for (int i = 0; i < Internals.size(); i++)	//propagate the values through the topologically ordered internal nodes
 	{
 		Internals[i]->cascade();
 	}
-	cout << "first cascade done\n";
 
 	cout << "*** Outputs:" << endl;			//begin output
 	for (int i = 0; i < POs.size(); i++)	//push values through to the primary outputs
