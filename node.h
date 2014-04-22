@@ -91,10 +91,10 @@ class Node
 	int getSitch()			//0 = NOT, 1 = NOTNOT, 2 = AND, 3 = OR
 	{
 		int sitch = 0;
-		if (tt.getNumVars > 1) sitch += 2;
+		if (tt.getNumVars() > 1) sitch += 2;
 		if (sitch == 2)		//either AND or OR
 		{
-			if (tt.getNumEntries > 1) sitch++;	//OR
+			if (tt.getNumEntries() > 1) sitch++;	//OR
 		}
 		else                //either NOT or NOTNOT
 		{
