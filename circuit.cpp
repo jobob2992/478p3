@@ -393,12 +393,14 @@ void Circuit::printTopo()
 	for (int i = 0; i < PIs.size(); i++)
 	{
 		PImap.insert(pair<string, Node*>(PIs[i]->getName(), PIs[i]));
+		cout << "PI insert " << i << endl;
 	}
 
 	//generate the map of POs
 	for (int i = 0; i < POs.size(); i++)
 	{
 		POmap.insert(pair<string, Node*>(POs[i]->getName(), POs[i]));
+		cout << "PO insert " << i << endl;
 	}
 
 	//generate the map of internal gates
@@ -406,11 +408,13 @@ void Circuit::printTopo()
 	{
 		if (it->second->type == INTERNAL)
 			InternalsMapBase.insert(*it);
+		cout << "Internal insert " << i << endl;
 	}
 
 	//order the internal gates
 	for (mapIter it = InternalsMapBase.begin(); it != InternalsMapBase.end(); it++)
 	{
+		cout << it->first << endl;
 		bool good = true;
 		tempFanIn = it->second->getFanin();
 		for (int i = 0; i < tempFanIn.size(); i++)	//check all the fanIns
@@ -435,6 +439,7 @@ void Circuit::printTopo()
 			it = InternalsMapBase.begin();
 		}
 	}
+	cout << "my assumption was right\n";
 
 	//output the Topo
 	cout << "*** Topological order:" << endl;
