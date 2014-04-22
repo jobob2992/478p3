@@ -430,7 +430,7 @@ void Circuit::printTopo()
 			it = InternalsMapBase.begin();	//to make sure I don't reference out of bounds, will eventually get through, despite inefficiency
 		}
 
-		if ((it == InternalsMapBase.end()) && (InternalsMapBase.size > 0))	//if we're at the end of the gates, but there are still more to add, go back to beginning and run again
+		if ((it == InternalsMapBase.end()) && (InternalsMapBase.size() > 0))	//if we're at the end of the gates, but there are still more to add, go back to beginning and run again
 		{
 			it = InternalsMapBase.begin();
 		}
@@ -438,11 +438,11 @@ void Circuit::printTopo()
 
 	//output the Topo
 	cout << "*** Topological order:" << endl;
-	for (int i = 0; i < PIs.size(); i++) cout << PIs[i]->getName << ' ';
-	for (int i = 0; i < Internals.size(); i++) cout << Internals[i]->getName << ' ';
+	for (int i = 0; i < PIs.size(); i++) cout << PIs[i]->getName() << ' ';
+	for (int i = 0; i < Internals.size(); i++) cout << Internals[i]->getName() << ' ';
 	for (int i = 0; i < POs.size(); i++)
 	{
-		cout << POs[i]->getName;
+		cout << POs[i]->getName();
 		if (i != (POs.size() - 1)) cout << ' ';
 	}
 }
@@ -468,13 +468,13 @@ void Circuit::simOutputs(string inputFile)
 	//generate the map of PIs
 	for (int i = 0; i < PIs.size; i++)
 	{
-		PImap.insert(pair<string, Node*>(PIs[i]->getName, PIs[i]));
+		PImap.insert(pair<string, Node*>(PIs[i]->getName(), PIs[i]));
 	}
 
 	//generate the map of POs
 	for (int i = 0; i < POs.size; i++)
 	{
-		POmap.insert(pair<string, Node*>(POs[i]->getName, POs[i]));
+		POmap.insert(pair<string, Node*>(POs[i]->getName(), POs[i]));
 	}
 
 	//generate the map of internal gates
@@ -491,7 +491,7 @@ void Circuit::simOutputs(string inputFile)
 		tempFanIn = it->second->getFanin;
 		for (int i = 0; i < tempFanIn.size(); i++)	//check all the fanIns
 		{
-			if ((PImap.find(tempFanIn[i]->getName) == PImap.end()) && (InternalsMap.find(tempFanIn[i]->getName) == PImap.end()))	//don't have this fanIn yet, don't add to vector yet
+			if ((PImap.find(tempFanIn[i]->getName()) == PImap.end()) && (InternalsMap.find(tempFanIn[i]->getName()) == PImap.end()))	//don't have this fanIn yet, don't add to vector yet
 			{
 				good = false;
 				break;
