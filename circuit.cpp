@@ -429,6 +429,7 @@ void Circuit::printTopo()
 				break;
 			}
 		}
+		cout << "pastFan" << endl;
 
 		if (good)	//all fanIns have already been seen, push it into the ordered vector, InternalMap, and delete it from the source map
 		{
