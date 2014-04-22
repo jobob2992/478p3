@@ -415,7 +415,7 @@ void Circuit::printTopo()
 		tempFanIn = it->second->getFanin();
 		for (int i = 0; i < tempFanIn.size(); i++)	//check all the fanIns
 		{
-			if ((PImap.find(tempFanIn[i]->getName) == PImap.end()) && (InternalsMap.find(tempFanIn[i]->getName) == PImap.end()))	//don't have this fanIn yet, don't add to vector yet
+			if ((PImap.find(tempFanIn[i]->getName()) == PImap.end()) && (InternalsMap.find(tempFanIn[i]->getName()) == PImap.end()))	//don't have this fanIn yet, don't add to vector yet
 			{
 				good = false;
 				break;
