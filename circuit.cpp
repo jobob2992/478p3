@@ -530,14 +530,18 @@ void Circuit::simOutputs(string inputFile)
 
 	while (ifs.good())	//initialize all the PrimaryInput nodes with values
 	{
+		cout << "clearing\n";
 		tempName.clear();
 		charVal.clear();
+		cout << "about to get line\n";
 		getline(ifs, tempName, ' ');
 		cout << "grab name " << tempName << endl;
 		getline(ifs, charVal, '\n');
 		cout << "value " << charVal << endl;
 		tempVal = atoi(charVal.c_str());
+		cout << "tempVal = " << tempVal << endl;
 		POmap.find(tempName)->second->setVal(tempVal);
+		cout << "val is set\n";
 	}
 	cout << "PIs initialized\n";
 
