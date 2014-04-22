@@ -413,11 +413,13 @@ void Circuit::printTopo()
 		}
 	}
 
+
 	//order the internal gates
-	for (mapIter it = InternalsMapBase.begin(); it != InternalsMapBase.end(); it++)
+	bool good = true;
+	for (mapIter it = InternalsMapBase.begin(); it != InternalsMapBase.end(); )
 	{
 		cout << it->first << endl;
-		bool good = true;
+		good = true;
 		tempFanIn = it->second->getFanin();
 		for (int i = 0; i < tempFanIn.size(); i++)	//check all the fanIns
 		{
@@ -439,6 +441,7 @@ void Circuit::printTopo()
 			it = InternalsMapBase.begin();	//to make sure I don't reference out of bounds, will eventually get through, despite inefficiency
 			cout << "went into good check\n";
 		}
+		else it++;
 
 		cout << "past if good\n";
 
