@@ -466,13 +466,13 @@ void Circuit::simOutputs(string inputFile)
 	//then I don't have to worry about checking if the fanIn nodes have been set yet
 	
 	//generate the map of PIs
-	for (int i = 0; i < PIs.size; i++)
+	for (int i = 0; i < PIs.size(); i++)
 	{
 		PImap.insert(pair<string, Node*>(PIs[i]->getName(), PIs[i]));
 	}
 
 	//generate the map of POs
-	for (int i = 0; i < POs.size; i++)
+	for (int i = 0; i < POs.size(); i++)
 	{
 		POmap.insert(pair<string, Node*>(POs[i]->getName(), POs[i]));
 	}
