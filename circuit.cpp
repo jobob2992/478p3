@@ -390,15 +390,15 @@ void Circuit::printTopo()
 	vector<Node*> tempFanIn;				//placeholder vector for working vector
 
 	//generate the map of PIs
-	for (int i = 0; i < PIs.size; i++)
+	for (int i = 0; i < PIs.size(); i++)
 	{
-		PImap.insert(pair<string, Node*>(PIs[i]->getName, PIs[i]));
+		PImap.insert(pair<string, Node*>(PIs[i]->getName(), PIs[i]));
 	}
 
 	//generate the map of POs
-	for (int i = 0; i < POs.size; i++)
+	for (int i = 0; i < POs.size(); i++)
 	{
-		POmap.insert(pair<string, Node*>(POs[i]->getName, POs[i]));
+		POmap.insert(pair<string, Node*>(POs[i]->getName(), POs[i]));
 	}
 
 	//generate the map of internal gates
@@ -412,7 +412,7 @@ void Circuit::printTopo()
 	for (mapIter it = InternalsMapBase.begin(); it != InternalsMapBase.end(); it++)
 	{
 		bool good = true;
-		tempFanIn = it->second->getFanin;
+		tempFanIn = it->second->getFanin();
 		for (int i = 0; i < tempFanIn.size(); i++)	//check all the fanIns
 		{
 			if ((PImap.find(tempFanIn[i]->getName) == PImap.end()) && (InternalsMap.find(tempFanIn[i]->getName) == PImap.end()))	//don't have this fanIn yet, don't add to vector yet
