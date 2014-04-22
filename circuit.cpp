@@ -393,14 +393,12 @@ void Circuit::printTopo()
 	for (int i = 0; i < PIs.size(); i++)
 	{
 		PImap.insert(pair<string, Node*>(PIs[i]->getName(), PIs[i]));
-		cout << "PI insert " << i << endl;
 	}
 
 	//generate the map of POs
 	for (int i = 0; i < POs.size(); i++)
 	{
 		POmap.insert(pair<string, Node*>(POs[i]->getName(), POs[i]));
-		cout << "PO insert " << i << endl;
 	}
 
 	//generate the map of internal gates
@@ -409,7 +407,6 @@ void Circuit::printTopo()
 		if (it->second->type == INTERNAL)
 		{
 			InternalsMapBase.insert(*it);
-			cout << "Internal insert " << it->first << endl;
 		}
 	}
 
@@ -423,15 +420,12 @@ void Circuit::printTopo()
 		tempFanIn = it->second->getFanin();
 		for (int i = 0; i < tempFanIn.size(); i++)	//check all the fanIns
 		{
-			cout << "fan " << i << endl;
 			if ((PImap.find(tempFanIn[i]->getName()) == PImap.end()) && (InternalsMap.find(tempFanIn[i]->getName()) == PImap.end()))	//don't have this fanIn yet, don't add to vector yet
 			{
 				good = false;
-				cout << "goodcheck " << good << endl;
 				break;
 			}
 		}
-		cout << "pastFan" << endl;
 
 		if (good)	//all fanIns have already been seen, push it into the ordered vector, InternalMap, and delete it from the source map
 		{
@@ -439,20 +433,14 @@ void Circuit::printTopo()
 			InternalsMap.insert(pair<string, Node*>(it->first, it->second));
 			InternalsMapBase.erase(it);
 			it = InternalsMapBase.begin();	//to make sure I don't reference out of bounds, will eventually get through, despite inefficiency
-			cout << "went into good check\n";
 		}
 		else it++;
-
-		cout << "past if good\n";
 
 		if ((it == InternalsMapBase.end()) && (InternalsMapBase.size() > 0))	//if we're at the end of the gates, but there are still more to add, go back to beginning and run again
 		{
 			it = InternalsMapBase.begin();
-			cout << "gets reset\n";
 		}
-		cout << "past size/end check\n";
 	}
-	cout << "my assumption was right\n";
 
 	//output the Topo
 	cout << "*** Topological order:" << endl;
@@ -462,6 +450,7 @@ void Circuit::printTopo()
 	{
 		cout << POs[i]->getName();
 		if (i != (POs.size() - 1)) cout << ' ';
+		else cout << endl;
 	}
 }
 
@@ -503,9 +492,11 @@ void Circuit::simOutputs(string inputFile)
 	}
 
 	//order the internal gates
-	for (mapIter it = InternalsMapBase.begin(); it != InternalsMapBase.end(); it++)
+	bool good = true;
+	for (mapIter it = InternalsMapBase.begin(); it != InternalsMapBase.end();)
 	{
-		bool good = true;
+		cout << it->first << endl;
+		good = true;
 		tempFanIn = it->second->getFanin();
 		for (int i = 0; i < tempFanIn.size(); i++)	//check all the fanIns
 		{
@@ -523,6 +514,7 @@ void Circuit::simOutputs(string inputFile)
 			InternalsMapBase.erase(it);
 			it = InternalsMapBase.begin();	//to make sure I don't reference out of bounds, will eventually get through, despite inefficiency
 		}
+		else it++;
 
 		if ((it == InternalsMapBase.end()) && (InternalsMapBase.size() > 0))	//if we're at the end of the gates, but there are still more to add, go back to beginning and run again
 		{
@@ -555,6 +547,7 @@ void Circuit::simOutputs(string inputFile)
 		POs[i]->cascade();
 		cout << POs[i]->getName() << " = " << POs[i]->getVal();		//output to screen as values are calculated
 		if (i != (POs.size() - 1)) cout << ", ";
+		else cout << endl;
 	}
 }
 
